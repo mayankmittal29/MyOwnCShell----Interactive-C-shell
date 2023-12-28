@@ -1,5 +1,5 @@
 # Description
-In this Mini project-1 ,I have created a customised shell prompt by myself in C programming language.
+In this Project ,I have created a customised shell prompt by myself in C programming language.
 In this I have implemented the command which is warp,seek,peek,pastevents,proclore and all other commands which can be background or foreground. In this I have two linked lists first to store history of commands and other for pids of all background processes which havn't terminated yet.
 # Assumptions
 The main assumption I have taken is that I have not made a command named exit to exit the terminal as it is the part of part B and part c ,so it will not be in my pastevents.txt file and in linked list.
