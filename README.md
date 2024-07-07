@@ -1,11 +1,145 @@
-# Description
-In this Project ,I have created a customised shell prompt by myself in C programming language.
-In this I have implemented the command which is warp,seek,peek,pastevents,proclore and all other commands which can be background or foreground. In this I have two linked lists first to store history of commands and other for pids of all background processes which havn't terminated yet.
-# Assumptions
-The main assumption I have taken is that I have not made a command named exit to exit the terminal as it is the part of part B and part c ,so it will not be in my pastevents.txt file and in linked list.
-My peek . is also not working but peek. -a ,-al,-l and all other combinations are working.
-Also in some commands like neonate and others if i do redirection then in file my prompt line is also writing due to some glitch.
-Also sed command will not work as i have tokenize the command. If i put the whole command together in execvp then it works.
-Also when i convert background process to foreground it converts but never terminates according to me as next prompt is not coming.
-Also i iMan command due to network glitches sometimes it displays invalid command but it works after two or three times.
-Piping is also not working if combined with redirection but if redirection of > is at last command then working but >> is not working. But normal redirection and normal piping is working properly.
+Custom Shell README
+Table of Contents
+
+    Introduction
+    Basic System Calls
+        Display Requirement
+        Input Requirements
+        warp Command
+        peek Command
+        pastevents Command
+        System Commands
+        proclore Command
+        seek Command
+    Processes, Files, and Misc.
+        I/O Redirection
+        Pipes
+        Redirection along with Pipes
+        activities Command
+        Signals
+        fg and bg Commands
+        neonate Command
+    Networking
+        iMan Command
+
+Introduction
+
+This document describes the implementation and usage of a custom shell with various features such as system calls, file handling, process management, and networking.
+Basic System Calls
+Display Requirement
+
+The shell prompt displays in the form <Username@SystemName:~>. The username and system name are dynamically retrieved, and the current directory is shown relative to the shell's home directory (~).
+Input Requirements
+
+    The shell supports a list of commands separated by ; or &.
+    Commands can be executed in the background with &.
+    Multiple commands can be given using ;.
+    Commands with errors will display an error message.
+
+warp Command
+
+The warp command changes the current working directory.
+
+    Supports . (current directory), .. (parent directory), ~ (home directory), and - (previous directory).
+    Executes sequentially if multiple arguments are provided.
+    Prints the full path after changing the directory.
+
+peek Command
+
+The peek command lists files and directories.
+
+    Default behavior excludes hidden files.
+    Flags:
+        -l: Displays extra information.
+        -a: Includes hidden files.
+    Supports symbols like ., .., ~, and -.
+
+pastevents Command
+
+The pastevents command is similar to the history command in Bash.
+
+    Stores the 15 most recent commands.
+    Commands identical to the previous one are not stored.
+    Persistent over different shell runs.
+    Subcommands:
+        pastevents: Displays the history.
+        pastevents purge: Clears the history.
+        pastevents execute <index>: Executes a command from the history.
+
+System Commands
+
+    Executes other system commands present in Bash (e.g., emacs, gedit).
+    Supports both foreground and background processes.
+    Prints the time taken for processes running more than 2 seconds.
+
+proclore Command
+
+The proclore command displays process information.
+
+    Displays:
+        PID
+        Process status (R/R+/S/S+/Z)
+        Process group
+        Virtual memory
+        Executable path
+
+seek Command
+
+The seek command searches for files or directories.
+
+    Flags:
+        -d: Only look for directories.
+        -f: Only look for files.
+        -e: Prints content or changes the directory if only one match is found.
+    Supports symbols like ., .., ~, and -.
+    Prints "No match found!" if no match is found.
+    Prints "Invalid flags!" if both -d and -f are used simultaneously.
+
+Processes, Files, and Misc.
+I/O Redirection
+
+    Supports >, >>, and <.
+    Creates or appends to files as necessary.
+    Displays "No such input file found!" if the input file does not exist.
+
+Pipes
+
+    Supports piping between commands.
+    Executes commands sequentially from left to right.
+    Displays "Invalid use of pipe" if improperly used.
+
+Redirection along with Pipes
+
+    Supports I/O redirection with pipes.
+    Ensures proper functionality when used together.
+
+activities Command
+
+The activities command lists all running processes spawned by the shell.
+
+    Displays:
+        Command name
+        PID
+        State (Running or Stopped)
+
+Signals
+
+    ping <pid> <signal_number>: Sends a signal to a process.
+    Handles special keyboard inputs:
+        Ctrl-C: Sends SIGINT to foreground process.
+        Ctrl-D: Logs out of the shell.
+        Ctrl-Z: Stops the foreground process.
+
+fg and bg Commands
+
+    fg <pid>: Brings a background process to the foreground.
+    bg <pid>: Changes the state of a stopped background process to running.
+
+neonate Command
+
+    neonate -n [time_arg]: Prints the PID of the most recently created process every [time_arg] seconds until x is pressed.
+
+Networking
+iMan Command
+
+    iMan <command_name>: Fetches and displays the man page for a given command from the internet.
